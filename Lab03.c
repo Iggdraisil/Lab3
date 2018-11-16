@@ -5,6 +5,7 @@
 #define n 5
 void matrix(int a[n][n]);
 double func(int b[n][n],double r[n]);
+//my comment
 
 void main(void)
 {
