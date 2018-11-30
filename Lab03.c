@@ -1,82 +1,83 @@
 #include "pch.h"
 #include "stdio.h"
 #include "math.h"
-#include <iostream>
 #define n 5
-void matrix(int a[n][n]);
-double func(int b[n][n],double r[n]);
+void bubble_sort(int matrix[n][n]);
+void calculate_geom_average_of_each_line(int b[n][n], double r[n]);
 //my comment
 
 void main(void)
 {
-	int a[n][n], i, j;
-	double F,r[n];
-	for (i = 0; i < n; i++)
-	{ 
-		for (j = 0; j < n; j++)
+	int matrix[n][n], line, column;
+	double dobutok = 1, geom_average_of_each_line[n];
+	for (line = 0; line < n; line++)
+	{
+		for (column = 0; column < n; column++)
 		{
-			printf("a[%d][%d]=", i + 1, j + 1);
-			scanf_s("%d", &a[i][j]);
+			printf("a[%d][%d]=", line + 1, column + 1);
+			scanf_s("%d", &matrix[line][column]);
 		}
 	}
-	matrix(a);
-	func(a,r);
-	for (i = 0; i < n; i++)
-	F = 1;
-	for (i = 0; i < n; i++) 
-	{		
-		F *=r[i];
+	bubble_sort(matrix);
+	calculate_geom_average_of_each_line(matrix, geom_average_of_each_line);
+	for (line = 0; line < n; line++)
+	{
+		dobutok *= geom_average_of_each_line[line];
 	}
-	for (i = 0; i < n; i++)
+	for (line = 0; line < n; line++)
 	{
 		printf("\n");
-		for (j = 0; j < n; j++)
+		for (column = 0; column < n; column++)
 		{
-			printf("%5d", a[i][j]);
+			printf("%5d", matrix[line][column]);
 		}
 	}
 	printf("\n");
-	for (i = 0; i < n; i++)
+	for (line = 0; line < n; line++)
 	{
-		printf("f(a%d)=%lf", i, r[i]);
+		printf("f(a%d)=%lf", line, geom_average_of_each_line[line]);
 	}
-	printf("Fij=%lf", F);
+	printf("Fij=%lf", dobutok);
 }
-double func(int a[n][n], double r[n])
+void calculate_geom_average_of_each_line(int matrix[n][n], double geom_average_each_line[n])
 {
-	int i, j;
-	double d;
-	for (i = 0; i < n; i++)
-	{  
-		d = 1;
-		for (j = 0; j < n; j++)
+	int line, column;
+	double dobutok;
+	for (line = 0; line < n; line++)
+	{
+		dobutok = 1;
+		for (column = 0; column < n; column++)
 		{
-			d = d * a[i][j];
+			dobutok = dobutok * matrix[line][column];
 		}
-		d = pow(fabs(d),0.2);
-		r[i] = d;
+		dobutok = pow(fabs(dobutok), 0.2);
+		geom_average_each_line[line] = dobutok;
 	}
-	return 0;
 }
 
- 
-void matrix(int a[n][n])
+
+void bubble_sort(int matrix[n][n])
 {
-	int i,k, j,c;
-	for (i = 0; i < n; i++)
+	for (int line = 0; line < n; line++)
 	{
-		for (k = 0; k < n; k++)
+		for (int count = 0; count < n; count++)
 		{
-			for (j = 0; j < n-1; j++)
+			for (int column = 0; column < n - 1; column++)
 			{
-				if (a[i][j] > a[i][j+1])
-				{
-					c = a[i][j];
-					a[i][j] = a[i][j+1];
-					a[i][j+1] = c;
-				}
+				swap_if_decrement(matrix[line][column], matrix[line][column + 1]);
+
 			}
 		}
 	}
 
+}
+
+void swap_if_decrement(int &a, int &b)
+{
+	if (a > b) 
+	{
+		int temp = a;
+		a = b;
+		b = temp;
+	}
 }
